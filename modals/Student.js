@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const studentSchema = new mongoose.Schema({
   _id: {
-    type: String, // Roll Number
+    type: String, 
     required: true
   },
   fullName: {
@@ -16,11 +16,6 @@ const studentSchema = new mongoose.Schema({
     unique: true,
     uppercase: true,
     trim: true
-  },
-  applicationId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Application',
-    required: true
   },
   password: {
     type: String,
@@ -46,13 +41,11 @@ const studentSchema = new mongoose.Schema({
     type: String,
     ref: 'Program',
     required: true
-    // References the batch-specific course program
   },
   courseId: {
     type: String,
     ref: 'Course',
     required: true
-    // Denormalized for quick access without populating programId
   },
   courseCode: {
     type: String,
