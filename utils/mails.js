@@ -1,6 +1,6 @@
 import {createTransport} from "nodemailer"
 
-const transpoter=createTransport({
+export const transporter=createTransport({
     service:"gmail",
     auth:{
         user:process.env.EMAIL,
@@ -18,7 +18,7 @@ export const sendMail=async(req,res)=>{
         <>Dhinni chadivey antha kaligaa unnavaa ??</> `
     }
 
-    await transpoter.sendMail(Mailoptions)
+    await transporter.sendMail(Mailoptions)
     return res.staus(200).json({
         msg:"Email sent Succesfully "
     })    
@@ -27,3 +27,4 @@ export const sendMail=async(req,res)=>{
     }
     
 }
+
