@@ -119,8 +119,7 @@ export const resetPassword=async (req,res)=>
       return res
         .status(400)
         .json({ error: "Password must be at least 8 characters" });
-    console.log("Received token:", otpToken);
-console.log("Store contents:", otpStore);
+    
     const data = otpStore.get(otpToken)
     if (!data)
       return res.status(400).json({ error:"otpstore data was not found !" });
@@ -183,5 +182,43 @@ await transporter.sendMail({
     }
     catch (error) {
     res.status(500).json({ error: `Server error ${error}` });
+  }
+}
+export const changepassword=async (req,res)=>
+{
+    try{
+        const {identifier,oldpassword,newpassword}=req.body
+        if (!identifier|!oldpassword|!newpassword) {
+  return res.status(400).json({
+    error: "All fields are required"
+  });
+}
+const user = await User.findOne({
+  $or: [
+    { email: identifier },
+    { phone: identifier }
+  ]
+});
+
+if (!user) {
+  return res.status(400).json({
+    error: "User not found"
+  });
+}
+if (newpassword.length < 8)
+      return res
+        .status(400)
+        .json({ error: "New password must be at least 8 characters long" });
+if (!user.authenticate(oldpassword))
+      return res.status(400).json({ error: "Old password incorrect" });
+user.password=newpassword
+await user.save()
+return res.status(200).json({
+      message: "Password updated successfully"
+    });
+
+    }
+catch (error) {
+    return res.status(500).json({ error: "Server error" });
   }
 }
