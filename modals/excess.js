@@ -20,11 +20,9 @@ const excessSchema = new mongoose.Schema({
       trim: true
     }
   },
-  skills: [{
-    type: String,
-    trim: true
-  }],
-  certifications: [{
+  skills:{type:Array,default:[]},
+  certifications:{
+    type: [{
     name: {
       type: String,
       trim: true
@@ -36,9 +34,10 @@ const excessSchema = new mongoose.Schema({
     date: {
       type: String,
       trim: true
-    }
-  }],
-  projects: [{
+    },
+  }],default:[]},
+  projects:{ 
+    type:[{
     title: {
       type: String,
       trim: true
@@ -50,7 +49,7 @@ const excessSchema = new mongoose.Schema({
     year: {
       type: Number
     }
-  }]
+  }],default:[]}
 }, {
   timestamps: true
 });

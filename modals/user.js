@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 import {v4} from "uuid"
-const createHmac=await import('node:crypto') 
+const {createHmac}=await import('node:crypto') 
 
 const LoginSchema=new mongoose.Schema({
     email:{type:String,required:true,trim:true,unique:true},
     encryPass:{type:String,trim:true},
     phone:{type:String,unique:true,trim:true,required:true},
-    code:{type:String,trim:true}
+    salt:{type:String,trim:true}
 })
 
 LoginSchema.virtual("password")
@@ -23,12 +23,12 @@ LoginSchema.methods={
     authenticate:function(password){
         return this.encryptPassword(password)===this.encryPass
     },
-    encryptPassword:function(password,salt){
+    encryptPassword:function(password){
         if(!password ||!this.salt) return "";
         try {
             return createHmac('sha256',this.salt)
         .update(password)
-        .digest(hex)
+        .digest('hex')
         } catch (error) {
             
         }
